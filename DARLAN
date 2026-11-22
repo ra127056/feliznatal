@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Feliz Natal! 🎄</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Mountains+of+Christmas:wght@700&family=Poppins:wght@400;600;700&display=swap');
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      background: radial-gradient(circle at top, #1b2f4a 0%, #0d1829 60%, #070d17 100%);
+      color: #fff;
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow-x: hidden;
+      padding: 20px;
+      position: relative;
+    }
+
+    /* Botão de som */
+    .music-btn {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      z-index: 100;
+      background: rgba(255, 255, 255, 0.14);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      color: #fff;
+      padding: 10px 16px;
+      border-radius: 999px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: transform 0.2s, background 0.2s;
+    }
+
+    .music-btn:hover {
+      background: rgba(255, 255, 255, 0.25);
+      transform: scale(1.05);
+    }
+
+    /* Neve caindo */
+    .snow-container {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    .snowflake {
+      position: absolute;
+      top: -10px;
+      color: #ffffff;
+      opacity: 0.8;
+      user-select: none;
+      animation: fall linear infinite;
+    }
+
+    @keyframes fall {
+      0% { transform: translateY(-10vh) translateX(0); }
+      100% { transform: translateY(110vh) translateX(25px); }
+    }
+
+    /* Cena principal */
+    .scene {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      max-width: 540px;
+      text-align: center;
+    }
+
+    .title {
+      font-family: 'Mountains of Christmas', cursive;
+      font-size: clamp(2.2rem, 6vw, 3.2rem);
+      color: #ffd76a;
+      text-shadow: 0 3px 12px rgba(255, 215, 106, 0.4);
+      margin-bottom: 18px;
+      animation: fadeDown 1s ease-out;
+    }
+
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Lareira */
+    .fireplace-wrapper {
+      position: relative;
+      width: 320px;
+      height: 290px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      margin-bottom: 24px;
+    }
+
+    .chimney-top {
+      position: absolute;
+      top: 0;
+      width: 180px;
+      height: 60px;
+      background: repeating-linear-gradient(
+        to bottom,
+        #8d2d22,
+        #8d2d22 16px,
+        #c89c8a 16px,
+        #c89c8a 19px
+      );
+      border: 3px solid #591b14;
+      border-bottom: none;
+      z-index: 2;
+    }
+
+    .mantel {
+      position: absolute;
+      top: 56px;
+      width: 320px;
+      height: 24px;
+      background: linear-gradient(to bottom, #7a4222, #4d2812);
+      border-radius: 6px;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
+      z-index: 5;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+    }
+
+    .light {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      animation: twinkle 1.2s infinite alternate;
+    }
+    .light:nth-child(odd) { background: #ff4b4b; box-shadow: 0 0 8px #ff4b4b; }
+    .light:nth-child(even) { background: #4bff7d; box-shadow: 0 0 8px #4bff7d; animation-delay: 0.6s; }
+    .light:nth-child(3n) { background: #ffd700; box-shadow: 0 0 8px #ffd700; animation-delay: 0.3s; }
+
+    @keyframes twinkle {
+      from { opacity: 0.4; transform: scale(0.85); }
+      to { opacity: 1; transform: scale(1.15); }
+    }
+
+    .fireplace-body {
+      position: relative;
+      width: 294px;
+      height: 212px;
+      background: repeating-linear-gradient(
+        to bottom,
+        #a3372a,
+        #a3372a 20px,
+        #d6aa98 20px,
+        #d6aa98 23px
+      );
+      border: 3px solid #5c1c14;
+      border-radius: 4px 4px 0 0;
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      z-index: 3;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.6);
+    }
+
+    .stocking {
+      position: absolute;
+      top: 8px;
+      width: 28px;
+      height: 44px;
+      background: #d92626;
+      border-radius: 4px 4px 12px 12px;
+      border-top: 10px solid #fff;
+      z-index: 6;
+    }
+    .stocking.left { left: 14px; transform: rotate(-6deg); }
+    .stocking.right { right: 14px; transform: rotate(6deg); background: #1e8741; }
+
+    .firebox {
+      position: relative;
+      width: 185px;
+      height: 175px;
+      background: radial-gradient(circle at bottom, #3b1c0e 0%, #170a05 70%);
+      border-radius: 92px 92px 0 0;
+      border: 6px solid #4d1912;
+      border-bottom: none;
+      clip-path: inset(-30px 0px 0px 0px);
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+    }
+
+    .hearth {
+      position: absolute;
+      bottom: -10px;
+      width: 326px;
+      height: 16px;
+      background: #612c1d;
+      border-radius: 4px;
+      z-index: 6;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.6);
+    }
+
+    /* Imagem do Snoopy saindo da lareira */
+    .snoopy-img {
+      height: 172px;
+      width: auto;
+      object-fit: contain;
+      transform: translateY(190px);
+      animation:
+        emergeFromFireplace 2.2s cubic-bezier(0.22, 1, 0.36, 1) 0.5s forwards,
+        gentleDance 2s ease-in-out 2.8s infinite alternate;
+      filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.5));
+      z-index: 4;
+    }
+
+    @keyframes emergeFromFireplace {
+      0% { transform: translateY(190px) scale(0.75); }
+      65% { transform: translateY(-6px) scale(1.03); }
+      85% { transform: translateY(3px) scale(0.99); }
+      100% { transform: translateY(0px) scale(1); }
+    }
+
+    @keyframes gentleDance {
+      0% { transform: translateY(0px) rotate(-2deg); }
+      100% { transform: translateY(-5px) rotate(2deg); }
+    }
+
+    /* Seção do Presente */
+    .gift-section {
+      margin-top: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      opacity: 0;
+      animation: showGift 1s ease forwards;
+      animation-delay: 2.2s;
+    }
+
+    @keyframes showGift {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .gift-box-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+      color: inherit;
+      outline: none;
+    }
+
+    .gift-box {
+      position: relative;
+      width: 110px;
+      height: 95px;
+      animation: bounceGift 1.8s ease-in-out infinite;
+      transition: transform 0.3s;
+    }
+
+    .gift-box-btn:hover .gift-box {
+      transform: scale(1.08);
+    }
+
+    @keyframes bounceGift {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .gift-lid {
+      position: relative;
+      width: 120px;
+      height: 26px;
+      left: -5px;
+      background: linear-gradient(135deg, #ff3b3b, #b80f0f);
+      border-radius: 6px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
+      z-index: 2;
+      transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.5s;
+    }
+
+    .gift-lid::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 22px;
+      height: 100%;
+      background: linear-gradient(to right, #ffe066, #f4b400);
+    }
+
+    .gift-bow {
+      position: absolute;
+      top: -18px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 44px;
+      height: 20px;
+    }
+    .gift-bow::before,
+    .gift-bow::after {
+      content: '';
+      position: absolute;
+      width: 22px;
+      height: 18px;
+      border: 4px solid #ffd43b;
+      border-radius: 50% 50% 0 50%;
+      top: 0;
+    }
+    .gift-bow::before { left: 0; transform: rotate(-15deg); }
+    .gift-bow::after { right: 0; border-radius: 50% 50% 50% 0; transform: rotate(15deg); }
+
+    .gift-body {
+      position: relative;
+      width: 110px;
+      height: 70px;
+      background: linear-gradient(135deg, #e62222, #990c0c);
+      border-radius: 0 0 8px 8px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    }
+
+    .gift-body::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 22px;
+      height: 100%;
+      background: linear-gradient(to right, #ffe066, #f4b400);
+    }
+
+    .gift-label {
+      background: linear-gradient(90deg, #d92626, #b31212);
+      border: 2px solid #ffd76a;
+      color: #fff;
+      padding: 12px 24px;
+      border-radius: 999px;
+      font-size: 1.05rem;
+      font-weight: 700;
+      box-shadow: 0 6px 20px rgba(255, 215, 106, 0.35);
+      animation: pulseText 1.6s infinite;
+    }
+
+    @keyframes pulseText {
+      0%, 100% { box-shadow: 0 0 12px rgba(255, 215, 106, 0.4); }
+      50% { box-shadow: 0 0 26px rgba(255, 215, 106, 0.85); }
+    }
+
+    .gift-opened .gift-box { animation: none; }
+    .gift-opened .gift-lid { transform: translateY(-45px) rotate(-18deg); opacity: 0; }
+    .gift-opened .gift-label { display: none; }
+
+    /* Cartão de Natal */
+    .message-card {
+      display: none;
+      margin-top: 16px;
+      background: linear-gradient(145deg, #fffdf7, #fdf2dc);
+      color: #2c1e16;
+      padding: 28px 24px;
+      border-radius: 18px;
+      border: 4px solid #c92a2a;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6), inset 0 0 0 2px #f59f00;
+      max-width: 460px;
+      animation: popCard 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+
+    @keyframes popCard {
+      from { opacity: 0; transform: scale(0.6) translateY(30px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .message-card.visible { display: block; }
+
+    .message-card h2 {
+      font-family: 'Mountains of Christmas', cursive;
+      color: #c92a2a;
+      font-size: 2rem;
+      margin-bottom: 12px;
+    }
+
+    .message-card p {
+      font-size: 1.08rem;
+      line-height: 1.65;
+      font-weight: 500;
+      color: #3b281d;
+    }
+
+    .signature {
+      margin-top: 14px;
+      font-weight: 700;
+      color: #1e733a;
+      font-size: 1.12rem;
+    }
+
+    /* Confetes */
+    .confetti {
+      position: fixed;
+      width: 10px;
+      height: 10px;
+      z-index: 99;
+      pointer-events: none;
+      animation: confettiFall 2.8s ease-out forwards;
+    }
+
+    @keyframes confettiFall {
+      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <button class="music-btn" id="musicToggle" onclick="toggleMusic()">
+    <span id="musicIcon">🔊</span>
+    <span id="musicText">Tocar Jingle Bells</span>
+  </button>
+
+  <div class="snow-container" id="snowContainer"></div>
+
+  <main class="scene">
+    <h1 class="title">Feliz Natal! 🎄✨</h1>
+
+    <!-- Lareira + Sua Imagem do Snoopy -->
+    <div class="fireplace-wrapper">
+      <div class="chimney-top"></div>
+
+      <div class="mantel">
+        <div class="light"></div>
+        <div class="light"></div>
+        <div class="light"></div>
+        <div class="light"></div>
+        <div class="light"></div>
+        <div class="light"></div>
+        <div class="light"></div>
+      </div>
+
+      <div class="fireplace-body">
+        <div class="stocking left"></div>
+        <div class="stocking right"></div>
+
+        <div class="firebox">
+          <img id="snoopyImg" class="snoopy-img" src="snoopy.png" alt="Snoopy Papai Noel" />
+        </div>
+      </div>
+
+      <div class="hearth"></div>
+    </div>
+
+    <!-- Caixa de Presente -->
+    <div class="gift-section" id="giftSection">
+      <button class="gift-box-btn" id="giftBtn" onclick="openGift()">
+        <div class="gift-box">
+          <div class="gift-lid">
+            <div class="gift-bow"></div>
+          </div>
+          <div class="gift-body"></div>
+        </div>
+        <span class="gift-label">🎁 Clique para ver seu presente de Natal</span>
+      </button>
+
+      <!-- Mensagem Revelada -->
+      <div class="message-card" id="messageCard">
+        <h2>🎄 Boas Festas! 🎅</h2>
+        <p>
+          "Feliz Natal para você e sua família, obrigado por tudo e muitas coisa boas cheguem em sua vida."
+        </p>
+        <div class="signature">Do seu amigo Darlan D. Motta</div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // ==========================================
+    // 1. REMOVEDOR AUTOMÁTICO DE FUNDO BRANCO
+    // ==========================================
+    const snoopyImg = document.getElementById('snoopyImg');
+    snoopyImg.onload = function () {
+      try {
+        const maxH = 500;
+        const scale = Math.min(1, maxH / snoopyImg.naturalHeight);
+        const w = Math.round(snoopyImg.naturalWidth * scale);
+        const h = Math.round(snoopyImg.naturalHeight * scale);
+
+        const canvas = document.createElement('canvas');
+        canvas.width = w;
+        canvas.height = h;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(snoopyImg, 0, 0, w, h);
+
+        const imgData = ctx.getImageData(0, 0, w, h);
+        const data = imgData.data;
+
+        // Se já tiver fundo transparente no canto, não faz nada
+        if (data[3] < 20) return;
+
+        // Flood-fill (busca em largura) apenas a partir das bordas externas
+        const visited = new Uint8Array(w * h);
+        const queue = new Int32Array(w * h);
+        let head = 0, tail = 0;
+
+        function isBg(idx) {
+          const r = data[idx], g = data[idx + 1], b = data[idx + 2];
+          const max = Math.max(r, g, b);
+          const min = Math.min(r, g, b);
+          return r > 195 && g > 195 && b > 195 && (max - min) < 40;
+        }
+
+        function enqueue(x, y) {
+          const p = y * w + x;
+          if (!visited[p] && isBg(p * 4)) {
+            visited[p] = 1;
+            queue[tail++] = p;
+          }
+        }
+
+        for (let x = 0; x < w; x++) { enqueue(x, 0); enqueue(x, h - 1); }
+        for (let y = 0; y < h; y++) { enqueue(0, y); enqueue(w - 1, y); }
+
+        while (head < tail) {
+          const p = queue[head++];
+          data[p * 4 + 3] = 0; // Torna o fundo transparente
+
+          const x = p % w;
+          const y = (p - x) / w;
+          if (x > 0) enqueue(x - 1, y);
+          if (x < w - 1) enqueue(x + 1, y);
+          if (y > 0) enqueue(x, y - 1);
+          if (y < h - 1) enqueue(x, y + 1);
+        }
+
+        ctx.putImageData(imgData, 0, 0);
+        snoopyImg.onload = null; // Evita loop infinito
+        snoopyImg.src = canvas.toDataURL('image/png');
+      } catch (e) {
+        // Caso seja aberto direto por arquivo local (file://), o navegador pode bloquear canvas;
+        // No GitHub Pages (https://) funciona 100%!
+      }
+    };
+
+    // ==========================================
+    // 2. GERADOR DE NEVE
+    // ==========================================
+    const snowContainer = document.getElementById('snowContainer');
+    for (let i = 0; i < 45; i++) {
+      const flake = document.createElement('div');
+      flake.className = 'snowflake';
+      flake.textContent = ['❄', '❅', '❆', '•'][Math.floor(Math.random() * 4)];
+      flake.style.left = Math.random() * 100 + 'vw';
+      flake.style.fontSize = (Math.random() * 14 + 10) + 'px';
+      flake.style.animationDuration = (Math.random() * 5 + 5) + 's';
+      flake.style.animationDelay = (Math.random() * 5) + 's';
+      flake.style.opacity = Math.random() * 0.7 + 0.3;
+      snowContainer.appendChild(flake);
+    }
+
+    // ==========================================
+    // 3. MÚSICA "JINGLE BELLS" VIA WEB AUDIO API
+    // ==========================================
+    let audioCtx = null;
+    let isPlaying = false;
+    let melodyTimer = null;
+    let noteIndex = 0;
+
+    const NOTES = {
+      C5: 523.25,
+      D5: 587.33,
+      E5: 659.25,
+      F5: 698.46,
+      G5: 783.99,
+      REST: 0
+    };
+
+    const jingleBells = [
+      [NOTES.E5, 250], [NOTES.E5, 250], [NOTES.E5, 500],
+      [NOTES.E5, 250], [NOTES.E5, 250], [NOTES.E5, 500],
+      [NOTES.E5, 250], [NOTES.G5, 250], [NOTES.C5, 350], [NOTES.D5, 150], [NOTES.E5, 800],
+
+      [NOTES.F5, 250], [NOTES.F5, 250], [NOTES.F5, 350], [NOTES.F5, 150],
+      [NOTES.F5, 250], [NOTES.E5, 250], [NOTES.E5, 250], [NOTES.E5, 125], [NOTES.E5, 125],
+      [NOTES.E5, 250], [NOTES.D5, 250], [NOTES.D5, 250], [NOTES.E5, 250], [NOTES.D5, 450], [NOTES.G5, 500],
+
+      [NOTES.E5, 250], [NOTES.E5, 250], [NOTES.E5, 500],
+      [NOTES.E5, 250], [NOTES.E5, 250], [NOTES.E5, 500],
+      [NOTES.E5, 250], [NOTES.G5, 250], [NOTES.C5, 350], [NOTES.D5, 150], [NOTES.E5, 800],
+
+      [NOTES.F5, 250], [NOTES.F5, 250], [NOTES.F5, 350], [NOTES.F5, 150],
+      [NOTES.F5, 250], [NOTES.E5, 250], [NOTES.E5, 250], [NOTES.E5, 125], [NOTES.E5, 125],
+      [NOTES.G5, 250], [NOTES.G5, 250], [NOTES.F5, 250], [NOTES.D5, 250], [NOTES.C5, 900],
+      [NOTES.REST, 400]
+    ];
+
+    function playTone(freq, duration) {
+      if (!audioCtx || freq === 0) return;
+
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+
+      gain.gain.setValueAtTime(0.001, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.18, audioCtx.currentTime + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration / 1000);
+
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+
+      osc.start();
+      osc.stop(audioCtx.currentTime + duration / 1000);
+    }
+
+    function playNextNote() {
+      if (!isPlaying) return;
+      const [freq, duration] = jingleBells[noteIndex];
+      playTone(freq, duration * 0.9);
+      noteIndex = (noteIndex + 1) % jingleBells.length;
+      melodyTimer = setTimeout(playNextNote, duration);
+    }
+
+    function updateMusicButton() {
+      const icon = document.getElementById('musicIcon');
+      const text = document.getElementById('musicText');
+      if (isPlaying) {
+        icon.textContent = '🎶';
+        text.textContent = 'Pausar Jingle Bells';
+      } else {
+        icon.textContent = '🔊';
+        text.textContent = 'Tocar Jingle Bells';
+      }
+    }
+
+    function startMusic() {
+      if (!audioCtx) {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        audioCtx = new AudioContext();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+      if (!isPlaying) {
+        isPlaying = true;
+        updateMusicButton();
+        playNextNote();
+      }
+    }
+
+    function stopMusic() {
+      isPlaying = false;
+      clearTimeout(melodyTimer);
+      updateMusicButton();
+    }
+
+    function toggleMusic() {
+      if (isPlaying) stopMusic();
+      else startMusic();
+    }
+
+    window.addEventListener('load', () => {
+      try {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        audioCtx = new AudioContext();
+        if (audioCtx.state === 'running') {
+          isPlaying = true;
+          updateMusicButton();
+          playNextNote();
+        }
+      } catch (e) {}
+    });
+
+    function unlockAudioOnFirstClick() {
+      if (!isPlaying) startMusic();
+      document.removeEventListener('click', unlockAudioOnFirstClick);
+      document.removeEventListener('touchstart', unlockAudioOnFirstClick);
+    }
+    document.addEventListener('click', unlockAudioOnFirstClick);
+    document.addEventListener('touchstart', unlockAudioOnFirstClick);
+
+    // ==========================================
+    // 4. ABRIR PRESENTE + CONFETES
+    // ==========================================
+    let giftOpened = false;
+
+    function openGift() {
+      if (giftOpened) return;
+      giftOpened = true;
+
+      startMusic();
+      document.getElementById('giftSection').classList.add('gift-opened');
+      document.getElementById('messageCard').classList.add('visible');
+      launchConfetti();
+    }
+
+    function launchConfetti() {
+      const colors = ['#ff4d4d', '#ffd43b', '#40c057', '#ffffff', '#339af0'];
+      for (let i = 0; i < 55; i++) {
+        const conf = document.createElement('div');
+        conf.className = 'confetti';
+        conf.style.left = Math.random() * 100 + 'vw';
+        conf.style.top = (Math.random() * 30 + 30) + 'vh';
+        conf.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        conf.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+        conf.style.animationDuration = (Math.random() * 1.5 + 1.5) + 's';
+        document.body.appendChild(conf);
+        setTimeout(() => conf.remove(), 3000);
+      }
+    }
+  </script>
+</body>
+</html>
